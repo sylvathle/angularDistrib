@@ -1,0 +1,31 @@
+#/SIM/scoring/phantom IcruSphere
+
+/run/initialize
+
+#/SIM/scoring/sampleSize 50
+#/SIM/scoring/resDir ../results/test
+
+#/SIM/geometry/domeIn/radius 400
+#/SIM/geometry/dome1/thick 0.37037037037037035
+#/SIM/geometry/dome1/material G4_Al
+#/SIM/geometry/dome2/thick 300.0
+#/SIM/geometry/dome2/material RegoAp17
+#/SIM/geometry/dome3/thick 1.0
+#/SIM/geometry/dome3/material G4_Galactic
+#/SIM/geometry/dome4/thick 1.0
+#/SIM/geometry/dome4/material G4_Galactic
+
+#/SIM/scoring/radbeam 282.1 mm
+/SIM/scoring/radbeam 398.94228 mm
+#/SIM/scoring/radbeam 564.1895835477563 mm
+
+/run/beamOn 10000
+/run/beamOn 10000
+/run/beamOn 10000
+/run/beamOn 10000
+/run/beamOn 10000
+/run/beamOn 10000
+#/run/beamOn 1000000
+#/run/beamOn 1000000
+#/run/beamOn 1000000
+#/run/beamOn 1000000
