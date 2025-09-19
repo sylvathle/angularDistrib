@@ -1,3 +1,4 @@
+
 #include "generator.hh"
 #include "Randomize.hh"
 //#include "ions.hh"
@@ -145,7 +146,7 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event* anEvent)
 
 
 	G4double sign = abs(mom[2])/mom[2];
-	pos = G4ThreeVector(0,0,1);
+	//pos = G4ThreeVector(0,0,1);
       	for (G4int i=0;i<3;i++)
       	{
 		angle += pos[i]*mom[i];
@@ -261,9 +262,9 @@ G4ThreeVector MyPrimaryGenerator::GenMomentum(G4ThreeVector pos)
 	G4double yrot = x * ypar + y * yper + z * normposy;
 	G4double zrot = x * zpar + y * zper + z * normposz;
 	G4double normrot = sqrt(xrot*xrot + yrot*yrot + zrot*zrot);
-	xrot = xrot/normrot;
-	yrot = yrot/normrot;
-	zrot = zrot/normrot;
+	xrot = -xrot/normrot;
+	yrot = -yrot/normrot;
+	zrot = -zrot/normrot;
 	//G4cout << xrot << " " << yrot << " " << zrot << G4endl;
 	
 	return G4ThreeVector(xrot,yrot,zrot);
