@@ -96,7 +96,7 @@ int main(int argc, char** argv)
 		visManager->SetVerboseLevel(0);
 		visManager->Initialize();
 		//G4cout << G4String("/control/execute vis")+phantomType+G4String(".mac") << G4endl;
-		UImanager->ApplyCommand(G4String("/control/execute visIcruSphere.mac"));
+		UImanager->ApplyCommand(G4String("/control/execute vis.mac"));
 		ui->SessionStart();
 		delete visManager;
 	}

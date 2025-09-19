@@ -172,7 +172,7 @@ G4bool SBG4PSSphereSurfaceFlux::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 
 	angle = sign*acos(abs(angle)/(magPos*magMom));
         //G4cout << magPos << ",";
-        G4cout << momentum[2] << ",";
+        //G4cout << momentum[2] << ",";
 
 	G4int ibin = G4int (angle/(3.1415926535/2.0)*Nabins);
 	N_in_angle[ibin]++;

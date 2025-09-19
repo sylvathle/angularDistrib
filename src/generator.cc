@@ -128,9 +128,9 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event* anEvent)
 	G4double posx0 = r * cos(thetapos);
 	G4double posy0 = r * sin(thetapos);
 
-	//posx0 = 0;
-	//posy0 = 0;
-	//posz0 = 1.0*m;
+	posx0 = 0;
+	posy0 = 0;
+	posz0 = 1.0*m;
 
 	// Define position
 	G4ThreeVector pos(posx0,posy0,posz0);
@@ -138,6 +138,26 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event* anEvent)
 
 	// Define momentum within cosine distribution
 	G4ThreeVector mom = GenMomentum(pos);
+	
+      G4double angle = 0;
+      G4double magPos=0;
+      G4double magMom=0;
+
+
+	G4double sign = abs(mom[2])/mom[2];
+	pos = G4ThreeVector(0,0,1);
+      	for (G4int i=0;i<3;i++)
+      	{
+		angle += pos[i]*mom[i];
+        	magPos += pos[i]*pos[i];
+        	magMom += mom[i]*mom[i];
+	}
+
+	magPos = sqrt(magPos);
+	magMom = sqrt(magMom);
+
+	angle = sign*acos(abs(angle)/(magPos*magMom));
+	G4cout << angle << ",";
 	//++nevent;
 
 	//G4cout << mom.x() << G4endl;

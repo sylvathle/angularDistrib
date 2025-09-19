@@ -14,9 +14,9 @@ G4VPhysicalVolume *MyGeometry::Construct()
 {
 
 	// Dimensions of the world
-	G4double xWorld = 10.0*m;
-	G4double yWorld = 10.0*m;
-	G4double zWorld = 5.0*m;
+	G4double xWorld = 2.0*m;
+	G4double yWorld = 2.0*m;
+	G4double zWorld = 2.0*m;
 
 	// Create world of simulation.
 	solidWorld = new G4Box("solidWorld", xWorld, yWorld, zWorld);
