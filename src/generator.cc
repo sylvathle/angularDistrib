@@ -157,7 +157,7 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event* anEvent)
 	magMom = sqrt(magMom);
 
 	angle = sign*acos(abs(angle)/(magPos*magMom));
-	G4cout << angle << ",";
+	//G4cout << angle << ",";
 	//++nevent;
 
 	//G4cout << mom.x() << G4endl;
@@ -203,10 +203,75 @@ G4ThreeVector MyPrimaryGenerator::GenMomentum(G4ThreeVector pos)
 	G4double normposx = pos[0]/normpos;
 	G4double normposy = pos[1]/normpos;
 	G4double normposz = pos[2]/normpos;
+	//G4cout << normposx << " " << normposy << " " << normposz << G4endl;
 
+	G4double u = CLHEP::RandFlat::shoot(0.0,1.0);
+	G4double v = CLHEP::RandFlat::shoot(0.0,1.0);
+
+	//G4cout << "u = " << u << "  v=" << v << G4endl;
+
+	// theta and phi in spherical coordinates
+	G4double theta = asin(u);
+	G4double phi = 2 * PI * v;
+
+	//G4cout << theta << " " << phi << G4endl;
+
+	// generated vector along the z axis
+	G4double x = sin(theta)*cos(phi);
+	G4double y = sin(theta)*sin(phi);
+	G4double z = cos(theta);
+
+	//G4cout << x << " " << y << " " << z << G4endl;
+
+	// Calculate vparallel
+	G4double xpar = normposy;
+	G4double ypar = -normposx;
+	G4double zpar = 0.0;
+	G4double normpar = sqrt(xpar*xpar + ypar*ypar + zpar*zpar);
+	if (normpar==0)
+	{
+		xpar = -normposz;
+		ypar = 0;
+		zpar = normposx;
+	}
+	normpar = sqrt(xpar*xpar + ypar*ypar + zpar*zpar);
+	xpar = xpar/normpar;
+	ypar = ypar/normpar;
+	zpar = zpar/normpar;
+	//G4cout << xpar << " " << ypar << " " << zpar << " " << normpar << G4endl;
+
+	// Calculate vperp
+	G4double xper = normposy*zpar - normposz*ypar;
+	G4double yper = normposz*xpar - normposx*zpar;
+	G4double zper = normposx*ypar - normposy*xpar;
+	
+
+
+	//G4double xper = normposx*normposy;
+	//G4double yper = normposy*normposy;
+	//G4double zper = -normposx*normposz-normposx*normposy;
+	G4double normper = sqrt(xper*xper + yper*yper + zper*zper);
+	xper = xper/normper;
+	yper = yper/normper;
+	zper = zper/normper;
+	//G4cout << xper << " " << yper << " " << zper << G4endl;
+
+	//New vector
+	G4double xrot = x * xpar + y * xper + z * normposx;
+	G4double yrot = x * ypar + y * yper + z * normposy;
+	G4double zrot = x * zpar + y * zper + z * normposz;
+	G4double normrot = sqrt(xrot*xrot + yrot*yrot + zrot*zrot);
+	xrot = xrot/normrot;
+	yrot = yrot/normrot;
+	zrot = zrot/normrot;
+	//G4cout << xrot << " " << yrot << " " << zrot << G4endl;
+	
+	return G4ThreeVector(xrot,yrot,zrot);
+
+	
 	//Calculate vparallel
 	//G4double randpar = CLHEP::RandFlat::shoot(0.0,1.0);
-	G4double randpar = CLHEP::RandFlat::shoot(0.0,1.0);
+	/*G4double randpar = CLHEP::RandFlat::shoot(0.0,1.0);
 	G4double sizevpar = -sqrt(1-randpar);
 	G4double xpar = normposx * sizevpar;
 	G4double ypar = normposy * sizevpar;
@@ -234,7 +299,7 @@ G4ThreeVector MyPrimaryGenerator::GenMomentum(G4ThreeVector pos)
 	G4double my0rot = sizevperp * (b1y * cos(theta) + b2y * sin(theta)) + ypar;
 	G4double mz0rot = sizevperp * (b1z * cos(theta) + b2z * sin(theta)) + zpar;
 
-	return G4ThreeVector(mx0rot,my0rot,mz0rot);
+	return G4ThreeVector(mx0rot,my0rot,mz0rot);*/
 
 }
 
