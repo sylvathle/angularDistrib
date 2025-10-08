@@ -1,5 +1,3 @@
-#/SIM/scoring/phantom IcruSphere
-
 /run/initialize
 
 /gps/source/intensity 1.0
@@ -8,7 +6,7 @@
 
 /gps/pos/type Surface
 /gps/pos/shape Sphere
-/gps/pos/radius 282.0948 mm
+/gps/pos/radius 300.0 mm
 
 /gps/ene/type Mono
 /gps/ene/mono 1 MeV
