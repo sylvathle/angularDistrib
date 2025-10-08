@@ -67,17 +67,10 @@ SBG4PSSphereSurfaceFlux::SBG4PSSphereSurfaceFlux(G4String name, G4int direction,
   : G4VPrimitiveScorer(name, depth)
   , HCID(-1)
   , fDirection(direction)
-  , EvtMap(nullptr)
   , weighted(true)
   , divideByArea(true)
 {
-  G4cout << "Create SBG4PSSphereSurfaceFlux" << G4endl;
-
-  for (G4int i=0;i<Nabins;i++)
-  {
-	N_in_angle.push_back(0);
-  }
-  
+  for (G4int i=0;i<Nabins;i++){N_in_angle.push_back(0);}
 
   DefineUnitAndCategory();
   SetUnit(unit);
@@ -86,15 +79,11 @@ SBG4PSSphereSurfaceFlux::SBG4PSSphereSurfaceFlux(G4String name, G4int direction,
 
 SBG4PSSphereSurfaceFlux::~SBG4PSSphereSurfaceFlux()
 {
-	G4cout << "Destroy out" << G4endl;
 }
 
 G4bool SBG4PSSphereSurfaceFlux::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 {
 
-  //if (aStep->GetTrack()->GetParticleDefinition()->GetParticleName()!="neutron") return false;
-  //G4cout << aStep->GetTrack()->GetParticleDefinition()->GetParticleName() << G4endl;
-  
   G4StepPoint* preStep = aStep->GetPreStepPoint();
 
   G4VPhysicalVolume* physVol       = preStep->GetPhysicalVolume();
@@ -136,84 +125,52 @@ G4bool SBG4PSSphereSurfaceFlux::ProcessHits(G4Step* aStep, G4TouchableHistory*)
       {
         return false;
       }
-
-	G4double kE_up = 0.0; // Albedo
-	G4double kE_down = 0.0;
 	
-	//G4cout << thisStep->GetPosition()[2] << " " << thisStep->GetMomentum()[2] << " " << preStep->GetKineticEnergy() << G4endl;
-
+	// Taking momentum of particle and position when crossing the virtual sphere
       G4ThreeVector position = thisStep->GetPosition();
       G4ThreeVector momentum = thisStep->GetMomentum();
 
-      /*G4cout << " position: " << position[0] << " ";
-      G4cout << position[1] << " ";
-      G4cout << position[2] << G4endl;
-
-      G4cout << " momentum: " << momentum[0] << " ";
-      G4cout << momentum[1] << " ";
-      G4cout << momentum[2] << G4endl;*/
 
       G4double angle = 0.;
       G4double magPos=0.;
       G4double magMom=0.;
 
-
-	G4double sign = abs(momentum[2])/momentum[2];
-	//position = G4ThreeVector(0,0,1);
+	// Calculating the angle between position and momentum
       	for (G4int i=0;i<3;i++)
       	{
 		angle += position[i]*momentum[i];
         	magPos += position[i]*position[i];
         	magMom += momentum[i]*momentum[i];
 	}
-
 	magPos = sqrt(magPos);
 	magMom = sqrt(magMom);
-
 	angle = acos(abs(angle)/(magPos*magMom));
-        //G4cout << magPos << ",";
-        //G4cout << momentum[2] << ",";
 
-	//G4int ibin = G4int (angle/(3.1415926535/2.0)*Nabins);
-	//N_in_angle[ibin]++;
-	/*G4cout << "[";
-        for (G4int ii=0; ii<Nabins-1; ii++)
-	{
-		G4cout << N_in_angle[ii] << ",";
+	// Get bin position of angle and increment N_in_angle at this bin
+	G4int ibin = G4int (angle/(3.1415926535/2.0)*Nabins);
+	N_in_angle[ibin]++;
+
+	// To normalize the histogram
+	G4int Nmax = 0;
+	for (int i=0;i<N_in_angle.size();i++) 
+	{	
+		if (N_in_angle[i]>Nmax) {Nmax = N_in_angle[i];}
 	}
-	G4cout << N_in_angle[Nabins-1] << "]";
-	G4cout << G4endl;*/
-	
-	
 
-	//if (angle > 3.1415926535/2.0) {G4cout << "BIG ANGLE " << angle << G4endl;}
-	//if (abs(angle) > 0.5719537610547146) {return false;}
-	if (position[2]<0.99) {return false;}
-	//if (abs(angle) > 3.1415926535/10.0) {return false;}
-	G4cout << angle << " ";
+	G4int Nsum = 0;
+	for (int i=0;i<N_in_angle.size();i++) {	Nsum += N_in_angle[i]; }
 
-      //G4cout << "angle: " << angle << G4endl;
-
-	
- 
-      if (thisStep->GetMomentum()[2]<0) {kE_down = preStep->GetKineticEnergy();}
-      else {kE_up = preStep->GetKineticEnergy();}
-     
-      /*if (aStep->GetTrack()->GetParticleDefinition() == G4Electron::Electron())
-      {
-        G4double kE = aStep->GetTrack()->GetKineticEnergy();
-        //if ((kE<80*keV) && (kE>50*keV)) 
-        {
-          aStep->GetTrack()->SetTrackStatus(fStopAndKill);
-          return true;
-        }
-      }*/
-
-      fluxInfo flux = fluxInfo(kE_down,kE_up);
-      
-      index++;
-
-      EvtMap->add(index, flux);
+	// Print every times Nmax reaches a multiple of 1e5
+	if (Nsum%100000==0)
+	{
+		G4cout << "[";
+        	for (G4int ii=0; ii<Nabins-1; ii++)
+		{
+			G4cout << std::setprecision(3) << " " << float(N_in_angle[ii]/Nmax) << ",";
+		}
+		G4cout << float(N_in_angle[Nabins-1]/Nmax) << "]";
+		G4cout << G4endl;
+	}
     }
   }
 
@@ -253,27 +210,9 @@ G4int SBG4PSSphereSurfaceFlux::IsSelectedSurface(G4Step* aStep,
 
 void SBG4PSSphereSurfaceFlux::Initialize(G4HCofThisEvent* HCE)
 {
-  EvtMap = new G4THitsMap<fluxInfo>(detector->GetName(), GetName());
-  index = 0;
-  if(HCID < 0)
-    HCID = GetCollectionID(0);
-  HCE->AddHitsCollection(HCID, (G4VHitsCollection*) EvtMap);
 }
 
-void SBG4PSSphereSurfaceFlux::clear() { EvtMap->clear(); }
-
-/*void SBG4PSSphereSurfaceFlux::PrintAll()
-{
-  G4cout << " MultiFunctionalDet  " << detector->GetName() << G4endl;
-  G4cout << " PrimitiveScorer " << GetName() << G4endl;
-  G4cout << " Number of entries " << EvtMap->entries() << G4endl;
-  for(const auto& [copy, flux] : *(EvtMap->GetMap()))
-  {
-    G4cout << "  copy no.: " << copy
-           << "  Flux  : " << (flux)->kE << " " << (flux)->particleName << " ["
-           << GetUnit() << "]" << G4endl;
-  }
-}*/
+void SBG4PSSphereSurfaceFlux::clear() {}
 
 void SBG4PSSphereSurfaceFlux::SetUnit(const G4String& unit)
 {

@@ -2,20 +2,18 @@
 
 /run/initialize
 
-#/gps/source/intensity 1.0
-#/gps/particle ion
-#/gps/ion 1 1 1 0
+/gps/source/intensity 1.0
+/gps/particle ion
+/gps/ion 1 1 1 0
 
-#/gps/pos/type surface
-#/gps/pos/shape Sphere
-#/gps/pos/radius 282.0948 mm
-#
-#/gps/ene/type Mono
-#/gps/ene/mono 1 MeV
-#
-#/gps/ang/type cos
-#
-#/SIM/scoring/radbeam 564.1895835477563 mm
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+/gps/pos/radius 282.0948 mm
+
+/gps/ene/type Mono
+/gps/ene/mono 1 MeV
+
+/gps/ang/type cos
 
 
-/run/beamOn 1000
+/run/beamOn 10000000

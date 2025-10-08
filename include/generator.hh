@@ -63,7 +63,8 @@ class MyPrimaryGenerator : public G4VUserPrimaryGeneratorAction
 	
 		G4GenericMessenger *fMess;
 		
-		G4ParticleGun *fParticleGun;
+		//G4ParticleGun *fParticleGun;
+		G4GeneralParticleSource *fParticleGun;
 		G4bool halfSphere;
   		G4double rsource, beamSurface, lowPosZ,factorSphere;
 		G4double missionFactor;

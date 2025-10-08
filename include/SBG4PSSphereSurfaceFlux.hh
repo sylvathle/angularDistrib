@@ -36,7 +36,7 @@
 #include "G4Sphere.hh"
 #include "G4PSDirectionFlag.hh"
 
-#include "fluxInfo.hh"
+//#include "fluxInfo.hh"
 ////////////////////////////////////////////////////////////////////////////////
 // (Description)
 //   This is a primitive scorer class for scoring Surface Flux.
@@ -91,7 +91,7 @@ class SBG4PSSphereSurfaceFlux : public G4VPrimitiveScorer
   G4int index;
   G4int HCID;
   G4int fDirection;
-  G4THitsMap<fluxInfo>* EvtMap;
+  //G4THitsMap<fluxInfo>* EvtMap;
   G4bool weighted;
   G4bool divideByArea;
 };
