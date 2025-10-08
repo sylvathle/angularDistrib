@@ -6,6 +6,7 @@ Minimalistic code to measure angular distribution from macro
  Strainghtforward (assuming Geant4 is installed):
 
 ```
+ git clone https://github.com/sylvathle/angularDistrib.git
  cd angularDistrib
  mkdir build
  cd build
