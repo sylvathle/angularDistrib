@@ -2,25 +2,20 @@
 
 /run/initialize
 
-#/SIM/scoring/sampleSize 50
-#/SIM/scoring/resDir ../results/test
+#/gps/source/intensity 1.0
+#/gps/particle ion
+#/gps/ion 1 1 1 0
 
-#/SIM/geometry/domeIn/radius 400
-#/SIM/geometry/dome1/thick 0.37037037037037035
-#/SIM/geometry/dome1/material G4_Al
-#/SIM/geometry/dome2/thick 300.0
-#/SIM/geometry/dome2/material RegoAp17
-#/SIM/geometry/dome3/thick 1.0
-#/SIM/geometry/dome3/material G4_Galactic
-#/SIM/geometry/dome4/thick 1.0
-#/SIM/geometry/dome4/material G4_Galactic
-
-#/SIM/scoring/radbeam 282.1 mm
-/SIM/scoring/radbeam 398.94228 mm
+#/gps/pos/type surface
+#/gps/pos/shape Sphere
+#/gps/pos/radius 282.0948 mm
+#
+#/gps/ene/type Mono
+#/gps/ene/mono 1 MeV
+#
+#/gps/ang/type cos
+#
 #/SIM/scoring/radbeam 564.1895835477563 mm
 
-/run/beamOn 10
-#/run/beamOn 1000000
-#/run/beamOn 1000000
-#/run/beamOn 1000000
-#/run/beamOn 1000000
+
+/run/beamOn 1000
