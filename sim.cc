@@ -24,9 +24,9 @@
 
 int main(int argc, char** argv)
 {
-	time_t start,end;
+	//time_t start,end;
 
-	time(&start);
+	//time(&start);
 
 	//#ifdef G4MULTITHREADED
 	//	G4MTRunManager *runManager = new G4MTRunManager();
@@ -36,8 +36,7 @@ int main(int argc, char** argv)
 	//	G4cout << "One core" << G4endl;
 	//#endif
 
-	runManager->SetVerboseLevel(0);
-	G4UIExecutive *ui = nullptr;
+	//runManager->SetVerboseLevel(0);
 
 	//G4String *shieldmaterial= new G4String("G4_Galactic");
 	//G4String *shieldmaterialname= new G4String("G4_Al");
@@ -51,7 +50,6 @@ int main(int argc, char** argv)
 	//	G4cout << shieldmaterial << G4endl;
 	//}
 
-	if (argc<=1) {ui = new G4UIExecutive(argc,argv);}
 
 	//G4String phantomType = "ICRP145"; //"ICRP145" "IcruSphere"
 	//phantomType = "IcruSphere"; //"ICRP145" "IcruSphere"
@@ -59,10 +57,10 @@ int main(int argc, char** argv)
 
 	//runManager->SetUserInitialization(new MyGeometry());
 
-	runManager->SetUserInitialization(new Shielding(0));
+	//runManager->SetUserInitialization(new Shielding(0));
 	runManager->SetUserInitialization(new MyGeometry());
 	//runManager->SetUserInitialization(new MyGeometry(ui));
-	//runManager->SetUserInitialization(new MyPhysicsList());
+	runManager->SetUserInitialization(new MyPhysicsList());
 
 	//runManager->SetUserInitialization(new QBBC(0));
 	//G4HadronicParameters::Instance()->SetEnableNeutronGeneralProcess(false);
@@ -78,7 +76,9 @@ int main(int argc, char** argv)
 	//const MyGeometry *detectorConstruction = static_cast<const MyGeometry*> (runManager->GetUserDetectorConstruction());
 	//G4String phantomType = detectorConstruction->GetPhantomType();
 	
+	G4UIExecutive *ui = nullptr;
 	G4UImanager *UImanager = G4UImanager::GetUIpointer();
+	if (argc==1) {ui = new G4UIExecutive(argc,argv);}
 
 
 	
@@ -101,13 +101,15 @@ int main(int argc, char** argv)
 		delete visManager;
 	}
 
-	delete runManager;
-	delete ui;
+	return 0;
 
-	time(&end);
+	//delete runManager;
+	//delete ui;
+
+	//time(&end);
 
 
-	double time_taken = double(end-start);
+	//double time_taken = double(end-start);
 
 	//auto man = G4AnalysisManager::Instance();
 

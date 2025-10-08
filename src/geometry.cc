@@ -82,7 +82,8 @@ G4VPhysicalVolume *MyGeometry::Construct()
 
 
 	//solidPhantom = new G4Sphere("solidPhantom", 0., rPhantom, 0, 360*deg, 0, 180*deg);
-	rPhantom = 1/(2*sqrt(3.1415926535))*m;
+	//rPhantom = 1.0/(2*sqrt(3.1415926535))*m;
+	rPhantom = 0.200*m;
 	solidFlux = new G4Sphere("solidFlux", 0., rPhantom, 0, 360*deg, 0, 180*deg);
 		
 	logicFluxSphere = new G4LogicalVolume(solidFlux, materials->GetMaterial("G4_Galactic"), "logicFluxSphere");

@@ -13,7 +13,7 @@ MyPrimaryGenerator::MyPrimaryGenerator()//:gcrFlux(new GCRFlux())
 {
 	fParticleGun = new G4ParticleGun(1);
 
-	halfSphere = false;
+	/*halfSphere = false;
 
 	//nevent = 0;
 	//nrejected = 0;
@@ -21,20 +21,45 @@ MyPrimaryGenerator::MyPrimaryGenerator()//:gcrFlux(new GCRFlux())
 	rsource = 2.1*m;
 	rsource = 3.5*m;
 
-	SetBeamRadius(rsource);
+	SetBeamRadius(rsource);*/
 
 	
-	iNbin = 100; //bins.GetNbins();
-	ilogemin = 1; //logMeV //bins.GetMinE(); //1 eV
-	ilogemax = 5; //logMeV //bins.GetMaxE(); //100 GeV
+	//iNbin = 100; //bins.GetNbins();
+	//ilogemin = 1; //logMeV //bins.GetMinE(); //1 eV
+	//ilogemax = 5; //logMeV //bins.GetMaxE(); //100 GeV
 
-	ilogemin_gen = 1; //logMeV //bins.GetMinE(); //1 eV
-	ilogemax_gen = 5; //logMeV //bins.GetMaxE(); //100 GeV
+	//ilogemin_gen = 1; //logMeV //bins.GetMinE(); //1 eV
+	//ilogemax_gen = 5; //logMeV //bins.GetMaxE(); //100 GeV
 
 	
 	// Prepare table of ions
-	ionTable = G4IonTable::GetIonTable();
-	ionTable->CreateAllIon();
+	//ionTable = G4IonTable::GetIonTable();
+	//ionTable->CreateAllIon();
+
+	G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
+	G4String particleName = "proton";
+	G4ParticleDefinition *particle = particleTable->FindParticle("proton");
+
+	G4ThreeVector pos(0.,0.,1.*m);
+	G4ThreeVector mom(0.,0.,1.);
+
+	fParticleGun->SetParticlePosition(pos);
+	fParticleGun->SetParticleMomentumDirection(mom);
+	fParticleGun->SetParticleEnergy(1*MeV);
+	fParticleGun->SetParticleDefinition(particle);
+
+	/*cmpVect.push_back(G4ThreeVector(1,0,0));
+	cmpVect.push_back(G4ThreeVector(-1,0,0));
+	cmpVect.push_back(G4ThreeVector(0,1,0));
+	cmpVect.push_back(G4ThreeVector(0,-1,0));
+	cmpVect.push_back(G4ThreeVector(0,0,1));
+	cmpVect.push_back(G4ThreeVector(0,0,-1));
+	//cmpVect.push_back(G4ThreeVector(1,1,0));
+	//cmpVect.push_back(G4ThreeVector(-1,-1,0));
+	//cmpVect.push_back(G4ThreeVector(0,1,1));
+	//cmpVect.push_back(G4ThreeVector(0,-1,-1));
+
+	for (int i=0;i<cmpVect.size();i++) {Nangles.push_back(0);}*/
 
 	// Preparing random generator
 	//biasRndm = new G4SPSRandomGenerator();
@@ -62,7 +87,7 @@ MyPrimaryGenerator::MyPrimaryGenerator()//:gcrFlux(new GCRFlux())
 	
 	// Initialize Nsimulated particle for each kind
 	//for (int i=0;i<iNbin;i++) {Npart.push_back(0);}
-	Npart = 0;
+	//Npart = 0;
 	//for (int i=0;i<n_ions_kind;i++) {Npart.push_back(0);} 
 	// Preparing ration of simulated particles, equal for all ions by default
 	//for (int i=0;i<n_ions_kind;i++) {ratioPart.push_back(G4double(1.0));} 
@@ -73,17 +98,17 @@ MyPrimaryGenerator::MyPrimaryGenerator()//:gcrFlux(new GCRFlux())
 	//sampleSize = 1e5;
 
 	// Preparing commands concerning the generator for the macros
-	DefineCommands();
+	//DefineCommands();
 
 	// Generating random seed based on time measured in nanosecond to ensure distinct names 
 	//	in case of multiparallel runs
-	std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
+	/*std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
 	auto duration = now.time_since_epoch();
 	auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(duration);
 
 	G4Random::setTheEngine(new CLHEP::RanecuEngine());
 	G4long seed = nanoseconds.count()%10000000; //1;//time(NULL);
-	G4Random::setTheSeed(seed);
+	G4Random::setTheSeed(seed);*/
 
 }
 
@@ -92,7 +117,7 @@ MyPrimaryGenerator::MyPrimaryGenerator()//:gcrFlux(new GCRFlux())
 MyPrimaryGenerator::~MyPrimaryGenerator()
 {
 	delete fParticleGun;
-	delete fMess;
+	//delete fMess;
 	//delete Npart
 }
 
@@ -110,7 +135,7 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event* anEvent)
 	//idParticle = 0;
 	//G4String particleName = gcrFlux->GetIonName(idParticle);
 	//G4cout << "GeneratePrimaries" << G4endl;
-	G4ParticleDefinition* particleDef = ionTable->GetIon(1,1,0*keV);
+	/*G4ParticleDefinition* particleDef = ionTable->GetIon(1,1,0*keV);
 	
 	// Define its energy
 	
@@ -129,18 +154,46 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event* anEvent)
 	G4double posx0 = r * cos(thetapos);
 	G4double posy0 = r * sin(thetapos);
 
-	posx0 = 0;
-	posy0 = 0;
-	posz0 = 1.0*m;
+	//posx0 = 0;
+	//posy0 = 0;
+	//posz0 = 1.0*m;
+	//posz0 = 282.0948*mm;
+	//posz0 = rsource;
+
 
 	// Define position
 	G4ThreeVector pos(posx0,posy0,posz0);
+	G4ThreeVector mom = GenMomentum(pos);
+	Npart++;*/
+
+	/*for (int i=0;i<3;i++)
+	{
+		G4cout << mom[i] << " ";
+	}*/
+
+	/*for (int i=0;i<cmpVect.size();i++)
+	{
+
+		//G4cout << acos(1.0-1.0/(2.0*PI)) << G4endl;
+		if (abs(GetAngle(-mom,cmpVect[i]))<acos(1.0-1.0/(2.0*PI))) {Nangles[i]++;}
+		//if (abs(GetAngle(-mom,cmpVect[i]))<PI/4.0) {Nangles[i]++;}
+		//G4cout << cmpVect[i] << " ";
+		//G4cout << GetAngle(-mom,cmpVect[i]) << G4endl;
+	}
+
+
+	for (int i=0;i<cmpVect.size();i++)
+	{
+		G4cout << (double)Nangles[i]/Npart << " " ;
+	}
+	G4cout << G4endl;
+	*/
+	
 
 
 	// Define momentum within cosine distribution
-	G4ThreeVector mom = GenMomentum(pos);
 	
-      G4double angle = 0;
+      /*G4double angle = 0;
       G4double magPos=0;
       G4double magMom=0;
 
@@ -157,7 +210,7 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event* anEvent)
 	magPos = sqrt(magPos);
 	magMom = sqrt(magMom);
 
-	angle = sign*acos(abs(angle)/(magPos*magMom));
+	angle = sign*acos(abs(angle)/(magPos*magMom));*/
 	//G4cout << angle << ",";
 	//++nevent;
 
@@ -185,10 +238,10 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event* anEvent)
 
 
 	// Assign parameters to the gun
-	fParticleGun->SetParticlePosition(pos);
-	fParticleGun->SetParticleMomentumDirection(mom);
-	fParticleGun->SetParticleEnergy(energy);
-	fParticleGun->SetParticleDefinition(particleDef);
+	//fParticleGun->SetParticlePosition(pos);
+	//fParticleGun->SetParticleMomentumDirection(mom);
+	//fParticleGun->SetParticleEnergy(energy);
+	//fParticleGun->SetParticleDefinition(particleDef);
 	fParticleGun->GeneratePrimaryVertex(anEvent);
 
 	//G4cout << "Gun generated " << G4endl;
@@ -213,6 +266,7 @@ G4ThreeVector MyPrimaryGenerator::GenMomentum(G4ThreeVector pos)
 
 	// theta and phi in spherical coordinates
 	G4double theta = asin(u);
+	//theta = PI / 2.0 * u;
 	G4double phi = 2 * PI * v;
 
 	//G4cout << theta << " " << phi << G4endl;
@@ -221,6 +275,17 @@ G4ThreeVector MyPrimaryGenerator::GenMomentum(G4ThreeVector pos)
 	G4double x = sin(theta)*cos(phi);
 	G4double y = sin(theta)*sin(phi);
 	G4double z = cos(theta);
+
+	//x = CLHEP::RandFlat::shoot(-1.0,1.0);
+	//y = CLHEP::RandFlat::shoot(-1.0,1.0);
+	//z = CLHEP::RandFlat::shoot(-1.0,1.0);
+	//G4double normXYZ = sqrt(x*x + y*y + z*z);
+	//x = x/normXYZ;
+	//y = y/normXYZ;
+	//z = z/normXYZ;
+
+	//return G4ThreeVector(x,y,z);
+	
 
 	//G4cout << x << " " << y << " " << z << G4endl;
 
@@ -353,6 +418,30 @@ void MyPrimaryGenerator::DefineCommands()
 }
 
 
+
+G4double GetAngle(G4ThreeVector v1,G4ThreeVector v2)
+{
+	G4double angle(0.0);
+	G4double mag1(0);
+	G4double mag2(0);
+
+	for (int i=0;i<3;i++)
+	{
+		mag1 += v1[i]*v1[i];
+		mag2 += v2[i]*v2[i];
+		angle += v1[i]*v2[i];
+	}
+
+	mag1 = sqrt(mag1);
+	mag2 = sqrt(mag2);
+
+	
+
+	//G4cout << v1 << " " << v2 << " " << acos(angle/(mag1*mag2)) << " " << (acos(angle/(mag1*mag2))<PI/4.0) << G4endl;
+
+	return acos(angle/(mag1*mag2));
+
+};
 
 
 

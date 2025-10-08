@@ -153,13 +153,13 @@ G4bool SBG4PSSphereSurfaceFlux::ProcessHits(G4Step* aStep, G4TouchableHistory*)
       G4cout << momentum[1] << " ";
       G4cout << momentum[2] << G4endl;*/
 
-      G4double angle = 0;
-      G4double magPos=0;
-      G4double magMom=0;
+      G4double angle = 0.;
+      G4double magPos=0.;
+      G4double magMom=0.;
 
 
 	G4double sign = abs(momentum[2])/momentum[2];
-	position = G4ThreeVector(0,0,1);
+	//position = G4ThreeVector(0,0,1);
       	for (G4int i=0;i<3;i++)
       	{
 		angle += position[i]*momentum[i];
@@ -170,12 +170,12 @@ G4bool SBG4PSSphereSurfaceFlux::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 	magPos = sqrt(magPos);
 	magMom = sqrt(magMom);
 
-	angle = sign*acos(abs(angle)/(magPos*magMom));
+	angle = acos(abs(angle)/(magPos*magMom));
         //G4cout << magPos << ",";
         //G4cout << momentum[2] << ",";
 
-	G4int ibin = G4int (angle/(3.1415926535/2.0)*Nabins);
-	N_in_angle[ibin]++;
+	//G4int ibin = G4int (angle/(3.1415926535/2.0)*Nabins);
+	//N_in_angle[ibin]++;
 	/*G4cout << "[";
         for (G4int ii=0; ii<Nabins-1; ii++)
 	{
@@ -186,8 +186,11 @@ G4bool SBG4PSSphereSurfaceFlux::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 	
 	
 
-	if (angle > 3.1415926535/2.0) {G4cout << "BIG ANGLE " << angle << G4endl;}
-	if (angle > 0.5719537610547146) {return false;}
+	//if (angle > 3.1415926535/2.0) {G4cout << "BIG ANGLE " << angle << G4endl;}
+	//if (abs(angle) > 0.5719537610547146) {return false;}
+	if (position[2]<0.99) {return false;}
+	//if (abs(angle) > 3.1415926535/10.0) {return false;}
+	G4cout << angle << " ";
 
       //G4cout << "angle: " << angle << G4endl;
 

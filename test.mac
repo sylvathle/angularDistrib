@@ -19,12 +19,7 @@
 /SIM/scoring/radbeam 398.94228 mm
 #/SIM/scoring/radbeam 564.1895835477563 mm
 
-/run/beamOn 10000
-/run/beamOn 10000
-/run/beamOn 10000
-/run/beamOn 10000
-/run/beamOn 10000
-/run/beamOn 10000
+/run/beamOn 10
 #/run/beamOn 1000000
 #/run/beamOn 1000000
 #/run/beamOn 1000000

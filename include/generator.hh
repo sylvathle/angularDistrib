@@ -32,6 +32,8 @@
 
 class G4GeneralParticleSource;
 
+G4double GetAngle(G4ThreeVector,G4ThreeVector);
+
 class MyPrimaryGenerator : public G4VUserPrimaryGeneratorAction
 {
 	public :
@@ -87,6 +89,10 @@ class MyPrimaryGenerator : public G4VUserPrimaryGeneratorAction
 		//std::vector<G4double> weightToUse;
 		//std::vector<G4double> ratioPart;
 		G4int Npart;
+
+		
+		std::vector <G4ThreeVector> cmpVect;
+		std::vector<G4int> Nangles;
 
 		G4ThreeVector GenMomentum(G4ThreeVector pos);
 
